@@ -3,4 +3,4 @@
 __pycache__
 lib/
 .config
-.secrets.toml
+.secrets.toml".streamlit/secrets.toml" 
