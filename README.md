@@ -4,6 +4,7 @@ Welcome to the CrewIntel: Agentic Market Research Bot project, powered by [crewA
 This project demonstrates the power of Agentic AI workflows by leveraging LLMs and role-based agent behaviors to automate complex research tasks traditionally handled by human analysts.
 
 ## System Architecture
+
 ![Flow Diagram](flow_diagram.svg)
 
 ## Key Features
