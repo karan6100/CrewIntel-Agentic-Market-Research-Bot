@@ -1,0 +1,68 @@
+input_intent_task:
+ description: >
+  "Understand and classify the user's intent, extract key entities (companies, focus areas, regions), and generate a structured JSON plan for the rest of the crew for given query {query}"
+ expected_output: >
+  """A structured JSON object with fields: 
+    - intent (string)
+    - target_companies (list)
+    - focus_areas (list)
+    - region (optional, string)
+    - time_range (optional, e.g., 'past 6 months')"""
+ agent: input_intent_agent
+
+query_creation_task:
+  description: >
+    """
+    Generate multiple well-formed search queries to retrieve relevant data based on the user's structured request. 
+    Use variations in phrasing, synonyms, site filters (like site:techcrunch.com), time filters (e.g., '2024', 'last 6 months'), and include all companies and focus areas.
+    Ensure queries are appropriate for web search or retrieval APIs.
+    Output a JSON list of query strings, with optional metadata like source type or priority.
+    """
+  expected_output: >
+    """{
+      "query_type": "web",
+      "queries": [... ]
+    }
+    """
+  agent: query_agent
+  inputs: {input_intent_task: input_intent_task.output}
+
+web_retriever_task:
+  description: >
+    "Search the web using the queries provided. Return top 3–5 relevant snippets or full-text results per query. 
+    Focus on recency and relevance."
+  expected_output: >
+    "A JSON list of documents with fields: title, url, snippet, source, date"
+  agent: web_retriever_agent
+
+data_structuring_task:
+  description: >
+    "Take raw text from web results and extract structured facts (e.g., pricing info, partnerships, dates, regions). Normalize entities."
+  expected_output: >
+    "A JSON object with structured data grouped by company and topic"
+  agent: data_structuring_agent
+
+impact_analyzer_task:
+  description: >
+    "Analyze structured and raw extracted intel. Identify tone (positive/negative), and assess strategic impact. Add a short explanation for each impact."
+  expected_output: >
+    "A list of impact summaries with fields: event, sentiment, impact_level, rationale",
+  agent: impact_analyzer_agent
+
+reasoning_and_synthesis_task:
+  description: >
+    "Using all prior structured intel, generate an executive-level insight. 
+    Compare competitors, trends, and implications for strategic decision-making."
+  expected_output: >
+    "A coherent narrative or summary with clear, actionable insights"
+  agent: reasoning_and_synthesis_agent
+
+insight_formatter_task:
+  description: >
+    "Format synthesized insights into a professional report. Use business language, bullets, sections, and optionally Markdown or HTML."
+  expected_output: >
+    "A polished insight summary, ready to be sent or pasted into a report or deck."
+  agent: insight_formatter_agent
+
+
+  
