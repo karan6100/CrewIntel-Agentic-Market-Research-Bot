@@ -5,7 +5,7 @@ This project demonstrates the power of Agentic AI workflows by leveraging LLMs a
 
 ## System Architecture
 
-![Flow Diagram](flow_diagram.svg)
+![Flow Diagram](flow_diagram.svg=250x250)
 
 ## Key Features
 - Multi-Agent Collaboration: Implements a team of specialized agents with clear roles (e.g., Researcher, Analyst, Reporter) that communicate and reason collectively.
